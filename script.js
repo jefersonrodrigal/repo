@@ -25,7 +25,18 @@ if (reducedMotion) {
             field.appendChild(ember);
             ember.addEventListener("animationend", () => ember.remove());
         };
-        setInterval(createEmber, 320);
+        let emberInterval = null;
+        const emberFieldObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting && !emberInterval) {
+                    emberInterval = setInterval(createEmber, 320);
+                } else if (!entry.isIntersecting && emberInterval) {
+                    clearInterval(emberInterval);
+                    emberInterval = null;
+                }
+            });
+        });
+        emberFieldObserver.observe(field);
     });
 
     addEventListener("scroll", () => {
@@ -133,7 +144,6 @@ function activateTransition(section) {
     section.classList.add("transition-burst");
 
     if (reducedMotion) return;
-    const bounds = section.getBoundingClientRect();
     for (let index = 0; index < 30; index += 1) {
         const mote = document.createElement("i");
         mote.className = "magic-mote";
@@ -150,6 +160,7 @@ function activateTransition(section) {
 
 const welcomeModal = document.querySelector(".welcome-modal");
 const welcomeButton = document.querySelector(".welcome-enter");
+const heartTransition = document.querySelector(".heart-transition");
 const musicDock = document.querySelector(".music-dock");
 const musicToggle = document.querySelector(".music-toggle");
 let spotifyController;
@@ -195,7 +206,7 @@ setTimeout(() => {
 
 const closeWelcome = () => {
     const heroTitle = document.querySelector(".hero-title");
-    heroTitle.innerHTML = 'Quero que você <em> se sinta especial todos os dias.</em><span>Como a personagem principal do meu Dorama</span>';
+    heroTitle.innerHTML = 'Quero que você <em> se sinta especial todos os dias.</em><span>Como a personagem principal de um Dorama</span>';
     heroTitle.classList.add("personalized");
     heroTitle.classList.remove("hero-title-changing");
     void heroTitle.offsetWidth;
@@ -205,6 +216,8 @@ const closeWelcome = () => {
     musicDock.setAttribute("aria-hidden", "false");
     if (spotifyController) spotifyController.play();
     welcomeModal.classList.add("closing");
+    heartTransition.classList.add("show");
+    setTimeout(() => heartTransition.classList.remove("show"), reducedMotion ? 0 : 3600);
     setTimeout(() => {
         welcomeModal.classList.remove("show", "closing");
         welcomeModal.setAttribute("aria-hidden", "true");
