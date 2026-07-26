@@ -106,6 +106,27 @@ const charactersObserver = new IntersectionObserver((entries) => {
 }, { threshold: .35 });
 charactersObserver.observe(charactersSection);
 
+const destinySection = document.querySelector(".destiny");
+const themesContainer = destinySection.querySelector(".themes");
+let destinyChanged = false;
+
+const destinyObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting && !destinyChanged) {
+            setTimeout(() => {
+                activateTransition(destinySection);
+                themesContainer.classList.add("quote-mode");
+                themesContainer.innerHTML = "<span class=\"destiny-date\" aria-hidden=\"true\">11/04/2004</span><blockquote class=\"destiny-quote\">“Eu nunca confiei na sorte ou no destino. Mas se o destino colocou você no meu caminho, eu lutarei contra o próprio céu para mantê-la a salvo.”</blockquote>";
+                themesContainer.querySelector(".destiny-date").classList.add("date-visible");
+                themesContainer.querySelector(".destiny-quote").classList.add("quote-changing");
+                destinyChanged = true;
+                destinyObserver.disconnect();
+            }, 1500);
+        }
+    });
+}, { threshold: .35 });
+destinyObserver.observe(destinySection);
+
 function activateTransition(section) {
     section.classList.remove("transition-burst");
     void section.offsetWidth;
