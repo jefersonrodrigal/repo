@@ -59,7 +59,7 @@ const storySectionObserver = new IntersectionObserver((entries) => {
                 void storyTitle.offsetWidth;
                 storyTitle.classList.add("title-changing");
                 const storyParagraphs = storySection.querySelectorAll(".story-copy > p");
-                storyParagraphs[0].textContent = "Uma garota e um rapaz se conheceram e se perderam em horas de conversa. Para ele, ela é a pessoa mais deslumbrante que seus olhos já viram. A conexão foi tão leve e agradável que o rapaz sentiu que poderia passar a vida inteira ali, vivendo naquele único diálogo.";
+                storyParagraphs[0].textContent = "Bastou um primeiro olhar para que o destino selasse aquele encontro. Conversaram por horas que pareceram segundos, perdidos em um universo só deles. Ele a observava em silêncio entre uma frase e outra, completamente hipnotizado por aquela que era, sem sombra de dúvidas, a visão mais deslumbrante que seus olhos já tinham contemplado. Tudo era tão perfeito, tão leve e verdadeiro, que o peito dele transbordou. Ali, no meio daquela conversa sem fim, ele entendeu: se pudesse escolher qualquer lugar no mundo para viver para sempre, seria exatamente ali, naqueles poucos metros, vivendo aquele momento.";
                 storyParagraphs[1]?.remove();
                 const newStoryTags = ["A vida tomou seu rumo", "Ambos viveram", "E agora se encontraram"];
                 storySection.querySelectorAll(".story-tags span").forEach((tag, index) => {
@@ -237,8 +237,15 @@ document.addEventListener("keydown", (event) => {
 });
 
 const declarationButton = document.querySelector("#declaration-yes");
+const finalLoveNote = document.querySelector(".final-love-note");
+const finalContent = document.querySelector(".final .reveal");
 declarationButton.addEventListener("click", () => {
     activateTransition(document.querySelector(".final"));
+    finalLoveNote.classList.add("visible");
+    const finalHeading = finalContent.querySelector("h2");
+    finalHeading.textContent = "我喜欢你";
+    finalHeading.classList.add("final-declared");
+    finalContent.querySelectorAll("p").forEach((paragraph) => paragraph.remove());
     declarationButton.innerHTML = "<span>♥</span> Combinado. Mal posso esperar.";
     declarationButton.disabled = true;
 }, { once: true });
